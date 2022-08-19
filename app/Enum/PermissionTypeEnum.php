@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Enum;
+
 class PermissionTypeEnum
 {
     CONST PERMISSION_TYPE = [

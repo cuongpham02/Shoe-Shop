@@ -12,7 +12,7 @@ if (! function_exists('getUserId')) {
      */
     function getUserId() {
 
-        return auth()->user()->id;
+        return auth()->guard('admins')->user()->id;
     }
 }
 
@@ -23,7 +23,7 @@ if (!function_exists('current_user')) {
      */
     function current_user()
     {
-        return auth()->user();
+        return auth()->guard('admins')->user();
     }
 }
 
@@ -192,5 +192,12 @@ if (!function_exists('base64_document')) {
         }
 
         return $afterBase64;
+    }
+}
+
+if (!function_exists('format_money')) {
+    function format_money($amount): string
+    {
+        return number_format($amount, 0, ',', '.');
     }
 }

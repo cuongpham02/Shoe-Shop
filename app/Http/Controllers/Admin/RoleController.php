@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Role\CreateRoleRequest;
+use App\Http\Requests\Admin\Role\UpdateRoleRequest;
 use App\Http\Requests\admin_page\Role\RoleCreateRequest;
 use App\Http\Requests\admin_page\Role\RoleUpdateRequest;
 use App\Models\Permission;
@@ -33,10 +35,12 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $attributes = $request->all();
-        $roles = $this->repository->getAllRoles($attributes);
+        $limit  = $request->input('limit', config('repository.pagination.limit'));
+        $filter = $request->all();
 
-        return view('admin_page.Role.index');
+        $result = $this->repository->getAllRoles($limit, $filter);
+
+        return view('admin_page.roles.index', compact('result'));
     }
 
     /**
@@ -52,11 +56,11 @@ class RoleController extends Controller
 
     /**
      * Handel store new role and attack permissions
-     * @param RoleCreateRequest $request
+     * @param CreateRoleRequest $request
      * @param CreateRoleService $service
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(RoleCreateRequest $request, CreateRoleService $service)
+    public function store(CreateRoleRequest $request, CreateRoleService $service)
     {
         $attributes = $request->only(['role_name','desc']);
         $permissions = $request->only(['premissions']);
@@ -68,15 +72,15 @@ class RoleController extends Controller
 
     /**
      * Show view edit Role.
-     * @param Role $role
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
+        $role = $this->repository->find($id);
         $permissions = Permission::all();
-        $roles_permissions = DB::table('roles_permissions')->where('role_id', $id)->pluck('permission_id');
+        $role_permission = DB::table('role_permission')->where('role_id', $id)->pluck('permission_id');
 
-        return view('admin_page.Role.edit',compact('permissions','role'));
+        return view('admin_page.Role.edit',compact('permissions','role_permission', 'role'));
     }
 
     /**
@@ -84,7 +88,7 @@ class RoleController extends Controller
      * @param UpdateRoleService $service
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update($id, RoleUpdateRequest $request, UpdateRoleService $service)
+    public function update($id, UpdateRoleRequest $request, UpdateRoleService $service)
     {
         $attributes = $request->only(['role_name','desc']);
         $permissions = $request->only(['premissions']);

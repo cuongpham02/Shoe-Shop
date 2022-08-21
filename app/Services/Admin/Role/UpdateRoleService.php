@@ -24,10 +24,9 @@ class UpdateRoleService
     public function handle($id, $attributes, $permissions)
     {
         if (isset($attributes)) {
-            $role = $this->repository->findorfail($id);
             try {
                 DB::beginTransaction();
-                $role->update($attributes);
+                $role = $this->repository->update($id, $attributes);
                 $role->permission()->detach();
                 $role->permission()->attach($permissions);
                 DB::commit();

@@ -18,7 +18,11 @@ class DeleteUserService
 
     public function handle($attrs)
     {
+        if (isset($id)) {
+            $this->repository->delete($id);
+        }
 
+        return true;
     }
 
 }

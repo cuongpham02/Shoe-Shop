@@ -3,6 +3,7 @@
 namespace App\Services\Admin\User;
 
 use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\DB;
 
 class CreateUserService
 {
@@ -16,8 +17,16 @@ class CreateUserService
         $this->repository = $repository;
     }
 
-    public function handle($attrs)
+    public function handle($attributes, $roles)
     {
-
+        $attributes['password'] = bcrypt($attributes['password']);
+        try {
+            DB::beginTransaction();
+            $users = $this->repository->create($attributes);
+            $users->roles()->attach($roles);
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+        }
     }
 }

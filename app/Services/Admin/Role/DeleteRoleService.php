@@ -27,6 +27,6 @@ class DeleteRoleService
             $this->repository->delete($id);
         }
 
-        return null;
+        return true;
     }
 }

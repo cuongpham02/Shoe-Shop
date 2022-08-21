@@ -3,6 +3,7 @@
 namespace App\Services\Admin\User;
 
 use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\DB;
 
 class UpdateUserService
 {
@@ -16,8 +17,18 @@ class UpdateUserService
         $this->repository = $repository;
     }
 
-    public function handle($attrs)
+    public function handle($id, $attributes, $roles)
     {
-
+        if (isset($attributes)) {
+            try {
+                DB::beginTransaction();
+                $role = $this->repository->update($id, $attributes);
+                $role->roles()->detach();
+                $role->roles()->attach($roles);
+                DB::commit();
+            } catch (\Exception $exception) {
+                DB::rollBack();
+            }
+        }
     }
 }

@@ -11,5 +11,15 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface UserRepository extends RepositoryInterface
 {
-    //
+    /**
+     * @param $limit
+     * @param $filter
+     * @return mixed
+     */
+    public function getAllUsers($limit = null, $filter = null);
+
+    /**
+     * @return mixed
+     */
+    public function getSoftDeleteUsers();
 }

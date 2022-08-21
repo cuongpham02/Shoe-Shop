@@ -22,13 +22,13 @@ class CreateRoleService
      * @param $attributes
      * @return mixed
      */
-    public function handle($name_role, $permission = null)
+    public function handle($attributes, $permission = null)
     {
-        if (isset($name_role)) {
+        if (isset($attributes)) {
 
             try {
                 DB::beginTransaction();
-                $role = $this->repository->create($name_role);
+                $role = $this->repository->create($attributes);
                 $role->permission()->attach($permission);
                 DB::commit();
             } catch (\Exception $exception) {

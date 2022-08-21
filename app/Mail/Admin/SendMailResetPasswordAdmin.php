@@ -16,9 +16,9 @@ class SendMailResetPasswordAdmin extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($attrs = [])
     {
-        //
+        $this->attrs = $attrs;
     }
 
     /**
@@ -28,6 +28,7 @@ class SendMailResetPasswordAdmin extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->subject(__('messages.common.forgot_password_title'))
+            ->view('admin_page.emails.mail_reset_password');
     }
 }

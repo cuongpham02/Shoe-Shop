@@ -2,11 +2,10 @@
 
 namespace App\Repositories\PasswordReset;
 
+use App\Models\PasswordReset;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\PasswordReset\PasswordResetRepository;
-use App\Entities\PasswordReset\PasswordReset;
-use App\Validators\PasswordReset\PasswordResetValidator;
 
 /**
  * Class PasswordResetRepositoryEloquent.
@@ -25,7 +24,7 @@ class PasswordResetRepositoryEloquent extends BaseRepository implements Password
         return PasswordReset::class;
     }
 
-    
+
 
     /**
      * Boot up the repository, pushing criteria
@@ -34,5 +33,5 @@ class PasswordResetRepositoryEloquent extends BaseRepository implements Password
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

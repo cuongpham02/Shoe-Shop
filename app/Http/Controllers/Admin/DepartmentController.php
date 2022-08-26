@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Department\CreateDepartmentRequest;
+use App\Http\Requests\Admin\Department\UpdateDepartmentRequest;
 use App\Http\Requests\Admin\Role\CreateRoleRequest;
 use App\Http\Requests\Admin\Role\UpdateRoleRequest;
 use App\Models\Permission;
 use App\Repositories\Department\DepartmentRepository;
 use App\Services\Admin\Department\CreateDepartmentService;
+use App\Services\Admin\Department\DeleteDepartmentService;
 use App\Services\Admin\Department\ForceDeleteDepartmentService;
 use App\Services\Admin\Department\RestoreDepartmentService;
+use App\Services\Admin\Department\UpdateDepartmentService;
 use App\Services\Admin\Role\CreateRoleService;
 use App\Services\Admin\Role\DeleteRoleService;
 use App\Services\Admin\Role\ForceDeleteRoleService;
@@ -55,7 +58,7 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Handel store new role and attack permissions
+     * Handel store new department
      * @param CreateRoleRequest $request
      * @param CreateRoleService $service
      * @return \Illuminate\Http\RedirectResponse
@@ -69,38 +72,36 @@ class DepartmentController extends Controller
     }
 
     /**
-     * Show view edit Role.
+     * Show view edit department.
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
-        $role = $this->repository->find($id);
-        $permissions = Permission::all();
-        $role_permission = DB::table('role_permission')->where('role_id', $id)->pluck('permission_id');
+        $departent = $this->repository->find($id);
 
-        return view('admin_page.departments.edit',compact('permissions','role_permission', 'role'));
+        return view('admin_page.departments.edit',compact('departent'));
     }
 
     /**
-     * Handle update role and permission
+     * Handle update department
      * @param UpdateRoleService $service
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update($id, UpdateRoleRequest $request, UpdateRoleService $service)
+    public function update($id, UpdateDepartmentRequest $request, UpdateDepartmentService $service)
     {
-        $service->handle($request->all());
+        $service->handle($id, $request->all());
 
         return redirect()->route('admin_page.departments.index');
         //        ->with('success', __('messages.request.update_success'));
     }
 
     /**
-     * Handle softDelete role;
+     * Handle softDelete department;
      * @param $id
      * @param DeleteRoleService $service
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function delete($id, DeleteRoleService $service)
+    public function delete($id, DeleteDepartmentService $service)
     {
         $service->handle($id);
 

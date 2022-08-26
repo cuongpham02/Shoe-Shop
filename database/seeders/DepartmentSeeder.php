@@ -56,5 +56,6 @@ class DepartmentSeeder extends Seeder
                 'updated_at' => now(),
             ),
         ));
+        Department::factory(30)->create();
     }
 }

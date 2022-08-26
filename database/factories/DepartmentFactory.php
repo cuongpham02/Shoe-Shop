@@ -14,7 +14,11 @@ class DepartmentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'desc' =>$this->faker->name(),
+            'status' => rand(0,1),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

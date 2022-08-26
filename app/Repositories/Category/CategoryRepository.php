@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CategoryRepository extends RepositoryInterface
 {
-    //
+    public function getAllCategories($limit = null, array $filter = []);
 }

@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Department;
 
+use App\Models\Department;
 use Illuminate\Database\Query\Builder;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Department\DepartmentRepository;
-use App\Entities\Department\Department;
 
 /**
  * Class DepartmentRepositoryEloquent.
